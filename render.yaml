@@ -1,0 +1,18 @@
+databases:
+  - name: smart-home-db
+    databaseName: smart_home
+    user: postgres
+    plan: free # Uses Render's free tier for PostgreSQL
+
+services:
+  - type: web
+    name: smart-home-predictive-energy
+    runtime: python
+    plan: free # Uses Render's free tier for Web Services
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn backend.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: smart-home-db
+          property: connectionString
