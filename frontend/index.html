@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Home Automation - Dashboard</title>
+    <!-- Google Fonts: Outfit and Roboto -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js for visualizations -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="/frontend/index.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h1 class="logo">Smart Home</h1>
+                <button class="sidebar-toggle-btn mobile-only"><i class="fas fa-times"></i></button>
+            </div>
+            
+            <nav class="sidebar-menu">
+                <ul>
+                    <li class="menu-item active">
+                        <a href="#"><i class="fas fa-chart-pie"></i> <span>Dashboard</span></a>
+                    </li>
+                    
+                    <!-- RengaiillamHall1 (with Load-1, Load-2) -->
+                    <li class="menu-dropdown open">
+                        <div class="dropdown-trigger">
+                            <i class="fas fa-laptop-house"></i>
+                            <span>RengaiillamHall1</span>
+                            <i class="fas fa-chevron-down arrow"></i>
+                        </div>
+                        <ul class="dropdown-menu">
+                            <li class="submenu-item active" data-load="1"><a href="#">Load - 1</a></li>
+                            <li class="submenu-item" data-load="2"><a href="#">Load - 2</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Sibling placeholders matching screenshots -->
+                    <li class="menu-dropdown">
+                        <div class="dropdown-trigger">
+                            <i class="fas fa-laptop-house"></i>
+                            <span>RengaiillamHall1</span>
+                            <i class="fas fa-chevron-down arrow"></i>
+                        </div>
+                        <ul class="dropdown-menu">
+                            <li class="submenu-placeholder"><a href="#">Load - 1</a></li>
+                            <li class="submenu-placeholder"><a href="#">Load - 2</a></li>
+                            <li class="submenu-placeholder"><a href="#">Load - 3</a></li>
+                            <li class="submenu-placeholder"><a href="#">Load - 4</a></li>
+                            <li class="submenu-placeholder"><a href="#">Load - 5</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="menu-dropdown">
+                        <div class="dropdown-trigger">
+                            <i class="fas fa-server"></i>
+                            <span>Test Node</span>
+                            <i class="fas fa-chevron-down arrow"></i>
+                        </div>
+                        <ul class="dropdown-menu">
+                            <li class="submenu-placeholder"><a href="#">Test Node</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Dashboard Panel -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="content-header">
+                <button class="menu-toggle-btn sidebar-toggle-btn"><i class="fas fa-bars"></i></button>
+                <div class="header-datetime" id="header-clock">
+                    <span class="time">07:16:28 PM</span>
+                    <span class="date">Mon, 13 July 2026</span>
+                </div>
+                <div class="user-profile">
+                    <img src="https://www.w3schools.com/howto/img_avatar.png" alt="Avatar" class="avatar">
+                    <span class="username">Hey! Gajendran Parthasarathi</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+            </header>
+
+            <div class="dashboard-body">
+                
+                <!-- Section Header: Live Data -->
+                <div class="section-title-bar">
+                    <span class="section-badge badge-live">LIVE / ACTUAL DATA</span>
+                    <span class="active-node-label">RengaiillamHall1 &mdash; Load 1</span>
+                </div>
+
+                <!-- First Row: 6 Parameter Cards -->
+                <div class="parameter-grid">
+                    <!-- Voltage -->
+                    <div class="param-card">
+                        <div class="card-icon icon-voltage">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="card-info">
+                            <span class="card-label">Voltage</span>
+                            <span class="card-value" id="val-voltage">216.2 <span class="unit">V</span></span>
+                        </div>
+                    </div>
+                    <!-- Current -->
+                    <div class="param-card">
+                        <div class="card-icon icon-current">
+                            <i class="fas fa-circle-dot"></i>
+                        </div>
+                        <div class="card-info">
+                            <span class="card-label">Current</span>
+                            <span class="card-value" id="val-current">0.92 <span class="unit">A</span></span>
+                        </div>
+                    </div>
+                    <!-- Power -->
+                    <div class="param-card">
+                        <div class="card-icon icon-power">
+                            <i class="fas fa-plug-circle-bolt"></i>
+                        </div>
+                        <div class="card-info">
+                            <span class="card-label">Power</span>
+                            <span class="card-value" id="val-power">193.8 <span class="unit">W</span></span>
+                        </div>
+                    </div>
+                    <!-- PF -->
+                    <div class="param-card">
+                        <div class="card-icon icon-pf">
+                            <span class="pf-logo">Pf</span>
+                        </div>
+                        <div class="card-info">
+                            <span class="card-label">PF</span>
+                            <span class="card-value" id="val-pf">0.97</span>
+                        </div>
+                    </div>
+                    <!-- Frequency -->
+                    <div class="param-card">
+                        <div class="card-icon icon-frequency">
+                            <i class="fas fa-wave-square"></i>
+                        </div>
+                        <div class="card-info">
+                            <span class="card-label">Frequency</span>
+                            <span class="card-value" id="val-frequency">49.9 <span class="unit">Hz</span></span>
+                        </div>
+                    </div>
+                    <!-- Energy -->
+                    <div class="param-card">
+                        <div class="card-icon icon-energy">
+                            <i class="fas fa-bolt-lightning"></i>
+                        </div>
+                        <div class="card-info">
+                            <span class="card-label">Energy</span>
+                            <span class="card-value" id="val-energy">252.52 <span class="unit">kWh</span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Second Row: 4 Metric Cards -->
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <span class="metric-label">Peak Demand</span>
+                        <span class="metric-value" id="metric-peak">218.6 W</span>
+                    </div>
+                    <div class="metric-card">
+                        <span class="metric-label">Today's Energy</span>
+                        <span class="metric-value" id="metric-today">0.01 kWh</span>
+                    </div>
+                    <div class="metric-card">
+                        <span class="metric-label">Estimated Cost</span>
+                        <span class="metric-value" id="metric-cost">₹ 0.08</span>
+                    </div>
+                    <div class="metric-card">
+                        <span class="metric-label">Status</span>
+                        <span class="metric-value status-on" id="metric-status">ON</span>
+                    </div>
+                </div>
+
+                <!-- Third Row: Filters and Controls -->
+                <div class="controls-row">
+                    <div class="date-picker-group">
+                        <label>From</label>
+                        <input type="datetime-local" id="filter-from">
+                    </div>
+                    <div class="date-picker-group">
+                        <label>To</label>
+                        <input type="datetime-local" id="filter-to">
+                    </div>
+                    <button class="btn btn-primary" id="btn-filter">
+                        <i class="fas fa-filter"></i> Filter
+                    </button>
+                    <button class="btn btn-success" id="btn-live">
+                        <i class="fas fa-satellite-dish"></i> Live
+                    </button>
+                    <button class="btn btn-primary" id="btn-export">
+                        <i class="fas fa-download"></i> Export
+                    </button>
+                </div>
+
+                <!-- NEW: AI Future Energy Prediction Dashboard Panel -->
+                <div class="ai-prediction-panel">
+                    <div class="ai-panel-header">
+                        <h2><i class="fas fa-brain"></i> AI-Based Future Energy Prediction</h2>
+                        <span class="section-badge badge-ai">AI PREDICTED DATA</span>
+                    </div>
+                    
+                    <div class="ai-controls">
+                        <form id="prediction-form" class="ai-form">
+                            <div class="input-field">
+                                <label for="pred-date">Future Date</label>
+                                <input type="date" id="pred-date" required>
+                            </div>
+                            <div class="input-field">
+                                <label for="pred-time">Future Time</label>
+                                <input type="time" id="pred-time" required>
+                            </div>
+                            <button type="submit" class="btn btn-predict" id="btn-predict">
+                                <span class="btn-text"><i class="fas fa-bolt"></i> Predict Energy</span>
+                                <span class="spinner hidden"><i class="fas fa-circle-notch fa-spin"></i> Running...</span>
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Prediction Result Display -->
+                    <div class="prediction-result-container hidden" id="prediction-results">
+                        <div class="prediction-info-header">
+                            <p>Predictions for: <strong id="pred-result-time">2026-08-20 18:30</strong></p>
+                            <p>Model Horizon: <span id="pred-result-horizon">768.4 days</span></p>
+                        </div>
+                        
+                        <div class="parameter-grid prediction-grid">
+                            <!-- Voltage -->
+                            <div class="param-card ai-card">
+                                <div class="card-icon icon-voltage">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                                <div class="card-info">
+                                    <span class="card-label">Predicted Voltage</span>
+                                    <span class="card-value" id="pred-voltage">-- <span class="unit">V</span></span>
+                                </div>
+                            </div>
+                            <!-- Current -->
+                            <div class="param-card ai-card">
+                                <div class="card-icon icon-current">
+                                    <i class="fas fa-circle-dot"></i>
+                                </div>
+                                <div class="card-info">
+                                    <span class="card-label">Predicted Current</span>
+                                    <span class="card-value" id="pred-current">-- <span class="unit">A</span></span>
+                                </div>
+                            </div>
+                            <!-- Power -->
+                            <div class="param-card ai-card">
+                                <div class="card-icon icon-power">
+                                    <i class="fas fa-plug-circle-bolt"></i>
+                                </div>
+                                <div class="card-info">
+                                    <span class="card-label">Predicted Power</span>
+                                    <span class="card-value" id="pred-power">-- <span class="unit">W</span></span>
+                                </div>
+                            </div>
+                            <!-- PF -->
+                            <div class="param-card ai-card">
+                                <div class="card-icon icon-pf">
+                                    <span class="pf-logo">Pf</span>
+                                </div>
+                                <div class="card-info">
+                                    <span class="card-label">Predicted PF</span>
+                                    <span class="card-value" id="pred-pf">--</span>
+                                </div>
+                            </div>
+                            <!-- Frequency -->
+                            <div class="param-card ai-card">
+                                <div class="card-icon icon-frequency">
+                                    <i class="fas fa-wave-square"></i>
+                                </div>
+                                <div class="card-info">
+                                    <span class="card-label">Predicted Frequency</span>
+                                    <span class="card-value" id="pred-frequency">-- <span class="unit">Hz</span></span>
+                                </div>
+                            </div>
+                            <!-- Energy -->
+                            <div class="param-card ai-card">
+                                <div class="card-icon icon-energy">
+                                    <i class="fas fa-bolt-lightning"></i>
+                                </div>
+                                <div class="card-info">
+                                    <span class="card-label">Predicted Energy</span>
+                                    <span class="card-value" id="pred-energy">-- <span class="unit">kWh</span></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Accuracy and Model details -->
+                        <div class="model-metrics-details">
+                            <h3><i class="fas fa-shield-halved"></i> Prediction Model Transparency & Evaluation</h3>
+                            <div class="metrics-table-wrapper">
+                                <table class="metrics-eval-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Target Variable</th>
+                                            <th>Model Type</th>
+                                            <th>Validation MAE</th>
+                                            <th>Validation RMSE</th>
+                                            <th>R² Score</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="metrics-eval-body">
+                                        <!-- Will be populated by JS -->
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="model-limitations">
+                                <p><strong>Disclaimer:</strong> Predictions are generated using trained XGBoost and linear-residual trend models. Accuracy may vary based on long-term time-series shifts and seasonal variations.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Error state -->
+                    <div class="prediction-error hidden" id="prediction-error">
+                        <i class="fas fa-triangle-exclamation"></i>
+                        <span id="error-message">Could not fetch prediction. Please check input parameters.</span>
+                    </div>
+                </div>
+
+                <!-- Chart Container -->
+                <div class="chart-section">
+                    <div class="chart-header">
+                        <div class="chart-tabs" id="chart-metric-tabs">
+                            <button class="tab-btn active" data-metric="all">All</button>
+                            <button class="tab-btn" data-metric="Voltage">Voltage <i class="fas fa-bolt warning-yellow"></i></button>
+                            <button class="tab-btn" data-metric="Current">Current <i class="fas fa-circle-dot red-current"></i></button>
+                            <button class="tab-btn" data-metric="Power">Power <i class="fas fa-plug orange-power"></i></button>
+                            <button class="tab-btn" data-metric="Frequency">Frequency <i class="fas fa-wave-square purple-freq"></i></button>
+                            <button class="tab-btn" data-metric="PowerFactor">Power Factor <i class="fas fa-circle-half-stroke blue-pf"></i></button>
+                            <button class="tab-btn" data-metric="Energy">Energy <i class="fas fa-bolt-lightning green-energy"></i></button>
+                        </div>
+                    </div>
+                    <div class="chart-canvas-container">
+                        <canvas id="energyChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Data Table Section -->
+                <div class="table-section">
+                    <h2>Table</h2>
+                    <div class="table-wrapper">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Date_Time</th>
+                                    <th>Voltage</th>
+                                    <th>Current</th>
+                                    <th>Power</th>
+                                    <th>Frequency</th>
+                                    <th>Power Factor</th>
+                                    <th>Energy</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-data-body">
+                                <!-- Will be populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+    
+    <!-- JS Logic -->
+    <script src="/frontend/index.js"></script>
+</body>
+</html>
