@@ -1,7 +1,6 @@
 databases:
   - name: smart-home-db
     databaseName: smart_home
-    user: postgres
     plan: free # Uses Render's free tier for PostgreSQL
 
 services:
