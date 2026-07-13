@@ -1,10 +1,14 @@
+import os
 import pandas as pd
 from sqlalchemy import create_engine
 import psycopg2
 
 def load_data():
-    db_url = "postgresql://postgres:@localhost:5432/smart_home"
-    print("Connecting to PostgreSQL database 'smart_home'...")
+    db_url = os.environ.get("DATABASE_URL", "postgresql://postgres:@localhost:5432/smart_home")
+    if db_url.startswith("postgres://"):
+        db_url = db_url.replace("postgres://", "postgresql://", 1)
+        
+    print("Connecting to PostgreSQL database...")
     engine = create_engine(db_url)
     
     excel_path = "energy_data.xlsx"
@@ -32,13 +36,10 @@ def load_data():
     
     # Create index on Date_Time and S_No for performance
     print("Creating indexes on sensor_data...")
-    conn = psycopg2.connect(
-        dbname="smart_home",
-        user="postgres",
-        password="",
-        host="localhost",
-        port=5432
-    )
+    # Get the raw connection string (works directly in psycopg2)
+    db_url = os.environ.get("DATABASE_URL", "postgresql://postgres:@localhost:5432/smart_home")
+    # psycopg2 supports both postgres:// and postgresql:// natively
+    conn = psycopg2.connect(db_url)
     cur = conn.cursor()
     cur.execute("ALTER TABLE sensor_data ADD PRIMARY KEY (\"S_No\");")
     cur.execute("CREATE INDEX idx_sensor_datetime ON sensor_data (\"Date_Time\");")

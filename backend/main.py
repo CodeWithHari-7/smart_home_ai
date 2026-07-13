@@ -27,8 +27,40 @@ app.add_middleware(
 )
 
 # Connect to database
-DB_URL = "postgresql://postgres:@localhost:5432/smart_home"
+DB_URL = os.environ.get("DATABASE_URL", "postgresql://postgres:@localhost:5432/smart_home")
+if DB_URL.startswith("postgres://"):
+    DB_URL = DB_URL.replace("postgres://", "postgresql://", 1)
+
 engine = create_engine(DB_URL)
+
+@app.on_event("startup")
+def on_startup():
+    # Check if database table exists and has records. If not, auto-seed it from Excel
+    try:
+        from sqlalchemy import inspect, text
+        inspector = inspect(engine)
+        should_load = False
+        
+        if not inspector.has_table("sensor_data"):
+            print("Table 'sensor_data' not found in PostgreSQL. Initializing data loader...")
+            should_load = True
+        else:
+            # Check if table is empty
+            with engine.connect() as conn:
+                res = conn.execute(text("SELECT COUNT(*) FROM sensor_data")).fetchone()
+                count = res[0] if res else 0
+                if count == 0:
+                    print("Table 'sensor_data' is empty. Running data loader...")
+                    should_load = True
+                else:
+                    print(f"Table 'sensor_data' has {count} records. Ready.")
+                    
+        if should_load:
+            from ml.data_loader import load_data
+            load_data()
+            print("PostgreSQL Database auto-seeded successfully!")
+    except Exception as e:
+        print("Error during database startup checks:", e)
 
 # Mount frontend directory for static assets (js, css, images)
 # Note: we will serve index.html directly from "/"
